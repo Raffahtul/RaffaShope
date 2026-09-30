@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KICKS & CO. | Premium Sneaker & Footwear Store</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#070a12',
+              card: '#0f172a',
+              border: '#1e293b',
+              accent: '#00f2fe', // Neon Cyan
+              volt: '#ccff00',   // Volt Green
+              orange: '#ff5e00', // Vibrant Orange
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #070a12;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+    
+    /* Glow Effects */
+    .glow-cyan {
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+    }
+    .glow-cyan-lg {
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.4);
+    }
+    .glow-orange {
+      box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
+    }
+    .text-glow {
+      text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+    }
+    
+    /* Hide Scrollbar for category scroll */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Glassmorphism Card Effect */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .glass-nav {
+      background: rgba(7, 10, 18, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Modal Animation */
+    .modal-enter {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    .modal-enter-active {
+      opacity: 1;
+      transform: scale(1);
+      transition: all 0.2s ease-out;
+    }
+    
+    /* Shoe hover zoom */
+    .shoe-card:hover .shoe-img {
+      transform: scale(1.08) rotate(-3deg);
+    }
+    .shoe-img {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-500 selection:text-black">
+
+  <!-- HEADER & NAVIGATION -->
+  <header class="sticky top-0 z-40 glass-nav">
+    <!-- Top Announcement Bar -->
+    <div class="bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 text-white text-[11px] font-bold py-1 px-4 text-center tracking-wider uppercase flex justify-between items-center max-w-7xl mx-auto">
+      <span class="hidden sm:inline"><i class="fa-solid fa-truck-fast mr-1">text</i> GRATIS ONGKIR SELURUH INDONESIA UNTUK PEMBELIAN > Rp 1.5 JUTA</span>
+      <span class="mx-auto sm:mx-0"><i class="fa-solid fa-fire mr-1 text-yellow-300"></i> DROP TERBARU: NIKE AIR JORDAN & YEEZY READY STOCK!</span>
+      <a href="javascript:void(0)" onclick="switchPage('promo')" class="underline hover:text-cyan-200 hidden md:inline">LIHAT DISKON</a>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="javascript:void(0)" onclick="switchPage('beranda')" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-black font-black text-xl shadow-lg shadow-cyan-500/30 group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-shoe-prints -rotate-45"></i>
+          </div>
+          <div>
+            <span class="text-2xl font-black tracking-tighter text-white">KICKS<span class="text-cyan-400">&</span>CO.</span>
+            <span class="block text-[9px] font-bold text-slate-400 tracking-widest -mt-1 uppercase">Sneaker Culture</span>
+          </div>
+        </a>
+
+        <!-- Search Bar (Desktop) -->
+        <div class="hidden md:flex items-center flex-1 max-w-md mx-8 relative">
+          <input type="text" id="global-search" oninput="handleSearch(this.value)" placeholder="Cari brand, model, atau artikel sepatu..." 
+            class="w-full bg-slate-900/90 border border-slate-700/80 rounded-full py-2.5 pl-11 pr-4 text-sm text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-400 text-sm"></i>
+          <button onclick="clearSearch()" id="clear-search-btn" class="hidden absolute right-3 text-slate-400 hover:text-white text-xs bg-slate-800 rounded-full w-5 h-5 flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Desktop Links -->
+        <nav class="hidden lg:flex items-center gap-1 font-bold text-xs tracking-wider uppercase">
+          <button id="nav-beranda" onclick="switchPage('beranda')" class="nav-link px-3 py-2 rounded-lg text-cyan-400 bg-slate-800/60 transition-all">Beranda</button>
+          <button id="nav-katalog" onclick="switchPage('katalog')" class="nav-link px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all">Katalog Sepatu</button>
+          <button id="nav-promo" onclick="switchPage('promo')" class="nav-link px-3 py-2 rounded-lg text-amber-400 hover:text-amber-300 hover:bg-amber-400/10 transition-all flex items-center gap-1">
+            <i class="fa-solid fa-bolt text-xs"></i> Promo Hot
+          </button>
+          <button id="nav-tentang" onclick="switchPage('tentang')" class="nav-link px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all">Tentang Kami</button>
+          <button id="nav-kontak" onclick="switchPage('kontak')" class="nav-link px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/40 transition-all">Kontak</button>
+        </nav>
+
+        <!-- Cart Button & Mobile Menu Toggle -->
+        <div class="flex items-center gap-3">
+          <!-- Quick WhatsApp Consultation Button -->
+          <a href="https://wa.me/6288975157459?text=Halo%20KICKS%20%26%20CO.,%20saya%20mau%20tanya%20stok%20sepatu" target="_blank" 
+             class="hidden sm:flex items-center gap-2 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 px-3 py-2 rounded-full text-xs font-bold hover:bg-emerald-600/30 transition">
+            <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i>
+            <span>Tanya Size</span>
+          </a>
+
+          <!-- Cart Button -->
+          <button onclick="toggleCartModal()" class="relative bg-slate-800/80 hover:bg-slate-700 text-white p-2.5 rounded-xl border border-slate-700 transition flex items-center justify-center">
+            <i class="fa-solid fa-bag-shopping text-lg text-cyan-400"></i>
+            <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-brand-orange text-white font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-md">0</span>
+          </button>
+
+          <!-- Mobile Nav Toggle Button -->
+          <button onclick="toggleMobileMenu()" class="lg:hidden bg-slate-800/80 text-slate-300 p-2.5 rounded-xl border border-slate-700 text-lg">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Search Input -->
+      <div class="md:hidden pb-4 pt-1">
+        <div class="relative">
+          <input type="text" oninput="handleSearch(this.value)" placeholder="Cari model & merk sepatu..." 
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2 pl-10 pr-4 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-slate-800 bg-slate-950 px-4 py-4 space-y-2">
+      <button onclick="switchPage('beranda'); toggleMobileMenu();" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl bg-slate-900 font-bold text-sm text-cyan-400 flex items-center justify-between">
+        <span><i class="fa-solid fa-house mr-3"></i>Beranda</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+      <button onclick="switchPage('katalog'); toggleMobileMenu();" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-900 font-bold text-sm text-slate-300 flex items-center justify-between">
+        <span><i class="fa-solid fa-shoe-prints mr-3"></i>Katalog Sepatu</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+      <button onclick="switchPage('promo'); toggleMobileMenu();" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-900 font-bold text-sm text-amber-400 flex items-center justify-between">
+        <span><i class="fa-solid fa-fire mr-3"></i>Promo Hot Diskon</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+      <button onclick="switchPage('tentang'); toggleMobileMenu();" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-900 font-bold text-sm text-slate-300 flex items-center justify-between">
+        <span><i class="fa-solid fa-circle-info mr-3"></i>Tentang Kami</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+      <button onclick="switchPage('kontak'); toggleMobileMenu();" class="mobile-nav-btn w-full text-left px-4 py-3 rounded-xl hover:bg-slate-900 font-bold text-sm text-slate-300 flex items-center justify-between">
+        <span><i class="fa-solid fa-envelope mr-3"></i>Kontak & Alamat</span>
+        <i class="fa-solid fa-chevron-right text-xs"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ==================== 1. PAGE: BERANDA ==================== -->
+    <section id="page-beranda" class="page-section space-y-12">
+      
+      <!-- HERO BANNER -->
+      <div class="relative rounded-3xl overflow-hidden glass-card border border-slate-700/60 p-6 md:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950">
+        <!-- Ambient Glow Backdrops -->
+        <div class="absolute -top-20 -left-20 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-brand-orange/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-5 max-w-xl text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-black tracking-widest uppercase">
+            <i class="fa-solid fa-certificate text-cyan-400"></i> 100% Guaranteed Authentic
+          </div>
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
+            STEP UP YOUR <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-brand-volt">SNEAKER GAME</span>
+          </h1>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Dapatkan koleksi sepatu original paling sought-after dari Nike, Adidas, New Balance, hingga Air Jordan. Siap kirim lengkap dengan Double Box & Extra Laces.
+          </p>
+          <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
+            <button onclick="switchPage('katalog')" class="px-7 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-400 to-blue-600 text-black font-black text-xs uppercase tracking-wider hover:opacity-90 transition shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+              <span>Jelajahi Koleksi</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button onclick="switchPage('promo')" class="px-7 py-3.5 rounded-2xl bg-slate-800/90 hover:bg-slate-700 border border-slate-600 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-2">
+              <i class="fa-solid fa-tags text-amber-400"></i>
+              <span>Diskon Spesial</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero Shoe Image Container -->
+        <div class="relative z-10 w-full max-w-md">
+          <div class="relative group cursor-pointer" onclick="openQuickView(1)">
+            <img id="hero-shoe-img" src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=800&auto=format&fit=crop" 
+                 alt="Hero Nike Air Jordan" 
+                 class="w-full h-auto object-contain drop-shadow-[0_20px_30px_rgba(0,242,254,0.3)] hover:scale-105 transition-transform duration-500 -rotate-12">
+            <div class="absolute -bottom-4 right-4 bg-slate-900/90 border border-cyan-400/50 backdrop-blur-md px-4 py-2 rounded-2xl shadow-xl flex items-center gap-3">
+              <div>
+                <span class="block text-[10px] text-slate-400 font-bold uppercase">Featured Drop</span>
+                <span class="text-xs font-black text-white">Air Jordan 1 High OG</span>
+              </div>
+              <span class="text-cyan-400 font-extrabold text-sm">Rp 3.299.000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SNEAKER CATEGORY PILLS -->
+      <div class="space-y-4">
+        <div class="flex justify-between items-end">
+          <div>
+            <span class="text-cyan-400 text-xs font-extrabold uppercase tracking-widest">Kategori Pilihan</span>
+            <h2 class="text-xl sm:text-2xl font-black text-white">Cari Sepatu Berdasarkan Gaya</h2>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar">
+          <button onclick="filterByCategory('all')" class="cat-pill active-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-cyan-400 text-black font-black text-xs uppercase tracking-wider shadow-md transition">Semua Kategori</button>
+          <button onclick="filterByCategory('Running')" class="cat-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition">🏃 Running</button>
+          <button onclick="filterByCategory('Lifestyle')" class="cat-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition">👟 Lifestyle & Casual</button>
+          <button onclick="filterByCategory('Basketball')" class="cat-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition">🏀 Basketball</button>
+          <button onclick="filterByCategory('Skate')" class="cat-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition">🛹 Skate & Canvas</button>
+          <button onclick="filterByCategory('Formal')" class="cat-pill whitespace-nowrap px-5 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white font-bold text-xs uppercase tracking-wider transition">👞 Leather & Formal</button>
+        </div>
+      </div>
+
+      <!-- SORT & FILTER CONTROLS BAR -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+        <div class="text-xs text-slate-400 font-semibold w-full sm:w-auto">
+          Menampilkan <span id="showing-count" class="text-cyan-400 font-bold">0</span> produk sepatu
+        </div>
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+          <label class="text-xs text-slate-400 font-bold whitespace-nowrap"><i class="fa-solid fa-sort mr-1"></i>Urutkan:</label>
+          <select id="sort-select" onchange="applySorting(this.value)" class="bg-slate-950 border border-slate-700 text-white text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-cyan-400">
+            <option value="popular">Paling Populer</option>
+            <option value="newest">Terbaru / Drop Fresh</option>
+            <option value="price-low">Harga: Rendah ke Tinggi</option>
+            <option value="price-high">Harga: Tinggi ke Rendah</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- SHOES PRODUCTS GRID -->
+      <div id="home-shoes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Dynamically Generated via JavaScript -->
+      </div>
+
+    </section>
+
+    <!-- ==================== 2. PAGE: KATALOG SEPATU ==================== -->
+    <section id="page-katalog" class="page-section hidden space-y-8">
+      
+      <div class="border-b border-slate-800 pb-6">
+        <span class="text-cyan-400 text-xs font-extrabold uppercase tracking-widest">Koleksi Lengkap</span>
+        <h1 class="text-3xl font-black text-white">Katalog Sepatu Original</h1>
+        <p class="text-slate-400 text-xs mt-1">Temukan sepatu impian Anda dari berbagai ukuran, kategori, dan rentang harga.</p>
+      </div>
+
+      <!-- CATALOG FILTERS SIDEBAR + GRID LAYOUT -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- Filter Sidebar -->
+        <div class="space-y-6 glass-card p-5 rounded-2xl border border-slate-800 h-fit">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h3 class="font-extrabold text-sm uppercase text-white tracking-wider"><i class="fa-solid fa-sliders mr-2 text-cyan-400"></i>Filter Sepatu</h3>
+            <button onclick="resetFilters()" class="text-[11px] text-cyan-400 hover:underline font-bold">Reset All</button>
+          </div>
+
+          <!-- Brand Filter -->
+          <div>
+            <label class="block text-xs font-bold text-slate-300 uppercase mb-2">Merk / Brand</label>
+            <div class="space-y-2 text-xs">
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                <input type="checkbox" value="Nike" onchange="filterCatalogByBrand()" class="brand-checkbox rounded bg-slate-900 border-slate-700 text-cyan-400 focus:ring-0">
+                <span>Nike</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                <input type="checkbox" value="Adidas" onchange="filterCatalogByBrand()" class="brand-checkbox rounded bg-slate-900 border-slate-700 text-cyan-400 focus:ring-0">
+                <span>Adidas</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                <input type="checkbox" value="New Balance" onchange="filterCatalogByBrand()" class="brand-checkbox rounded bg-slate-900 border-slate-700 text-cyan-400 focus:ring-0">
+                <span>New Balance</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                <input type="checkbox" value="Puma" onchange="filterCatalogByBrand()" class="brand-checkbox rounded bg-slate-900 border
